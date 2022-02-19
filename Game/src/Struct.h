@@ -33,6 +33,7 @@ struct CharSpec {
 	int max_life;
 	int cur_life;
 	float speed;
+	float anim_speed;
 };
 
 struct LifeBarHeartsStruct {

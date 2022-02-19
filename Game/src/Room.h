@@ -10,20 +10,23 @@
 
 class Room {
 public:
-	Room();
+	Room(const vectori2& coord);
 	~Room();
 	virtual void SetMap();
 	void SetElem();
 	void Draw();
 	void SetCamera(Camera* cam);
+	void SetDoor(char side);
 private:
 	friend class InteractionPM;
-	void Init();
+	void Init(const vectori2& coord);
 	void SetTileMap();
 	void SetWalls();
+	void SetDoors();
 	TileMapStruct tilemap_info;
 	TileMap* tilemap;
 	std::set<char> walls;
+	std::set<char> doors;
 };
 
 #endif

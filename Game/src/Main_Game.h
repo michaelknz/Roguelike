@@ -22,6 +22,7 @@ private:
 	Level* level;
 	Camera* camera;
 	Timer* timer;
+	Input* input;
 	int width;
 	int height;
 	std::string title;

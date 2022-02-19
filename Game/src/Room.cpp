@@ -1,10 +1,11 @@
 #include "Room.h"
 
-Room::Room() {
-	Init();
+Room::Room(const vectori2& coord) {
+	Init(coord);
 	SetMap();
 	SetElem();
 	SetWalls();
+	SetDoors();
 	SetTileMap();
 }
 
@@ -12,8 +13,7 @@ Room::~Room() {
 	delete tilemap;
 }
 
-void Room::Init() {
-	tilemap_info.transform.pos.SetValue(-1.8f, 1.2f);
+void Room::Init(const vectori2& coord) {
 	tilemap_info.transform.rotation.SetValue(0, 0, 0);
 	tilemap_info.transform.size.SetValue(0.15, 0.15);
 	tilemap_info.transform.order = { -1, -1,
@@ -25,6 +25,8 @@ void Room::Init() {
 	tilemap_info.transform.shader_name = "TileMapShader";
 	tilemap_info.transform.z = 0;
 	tilemap_info.size.SetValue(25, 16);
+	tilemap_info.transform.pos.SetValue(-1.8f + (float)coord.x * tilemap_info.transform.size.x * (float)tilemap_info.size.x, 
+		                                 1.2f + (float)coord.y * tilemap_info.transform.size.y * (float)tilemap_info.size.y);
 	tilemap_info.texture.size.SetValue(8, 8);
 	tilemap_info.texture.st_pos.SetValue(0, 0);
 	tilemap_info.texture.name = "res/room.png";
@@ -59,6 +61,9 @@ void Room::SetElem() {
 	tilemap_info.elem['L'] = vectori2(0, 7);
 	tilemap_info.elem['R'] = vectori2(3, 7);
 	tilemap_info.elem['.'] = vectori2(1, 8);
+	tilemap_info.elem['d'] = vectori2(4, 7);
+	tilemap_info.elem['o'] = vectori2(11, 6);
+	tilemap_info.elem['p'] = vectori2(12, 6);
 }
 
 void Room::SetCamera(Camera* cam) {
@@ -82,4 +87,42 @@ void Room::SetWalls() {
 	walls.insert('L');
 	walls.insert('r');
 	walls.insert('R');
+	walls.insert('d');
+	walls.insert('o');
+	walls.insert('p');
+}
+
+void Room::SetDoors() {
+	doors.insert('d');
+	doors.insert('o');
+	doors.insert('p');
+}
+
+void Room::SetDoor(char side) {
+	int index = 0;
+	switch (side)
+	{
+	case 'l':
+		index = tilemap_info.size.y / 2 * tilemap_info.size.x;
+		tilemap_info.map[index] = 'o';
+		tilemap->SetMapElem(index, 'o');
+		break;
+	case 'r':
+		index = tilemap_info.size.y / 2 * tilemap_info.size.x + tilemap_info.size.x - 1;
+		tilemap_info.map[index] = 'p';
+		tilemap->SetMapElem(index, 'p');
+		break;
+	case 'u':
+		index = tilemap_info.size.x / 2;
+		tilemap_info.map[index] = 'd';
+		tilemap->SetMapElem(index, 'd');
+		break;
+	case 'd':
+		index = (tilemap_info.size.y - 1) * tilemap_info.size.x + tilemap_info.size.x / 2;
+		tilemap_info.map[index] = 'd';
+		tilemap->SetMapElem(index, 'd');
+		break;
+	default:
+		break;
+	}
 }

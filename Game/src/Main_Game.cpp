@@ -17,6 +17,7 @@ void Main_Game::Init_Entities() {
 	player = new Player(camera);
 	level = new Level(camera);
 	timer = new Timer;
+	input = new Input;
 }
 
 void Main_Game::Delete_Entities() {
@@ -25,6 +26,7 @@ void Main_Game::Delete_Entities() {
 	delete level;
 	delete display;
 	delete timer;
+	delete input;
 }
 
 void Main_Game::Set_Camera() {
@@ -40,13 +42,14 @@ void Main_Game::Main_Loop() {
 			}
 
 			if (Event.type == SDL_KEYDOWN || Event.type == SDL_KEYUP) {
-				player->Update_Move(Event);
+				input->Update_Keyboard(Event);
 			}
 		}
-		display->Clear_Screen(0.5f, 0.5f, 0.5f, 1.0f);
+		display->Clear_Screen(0.0f, 0.0f, 0.0f, 1.0f);
 		level->Update();
-		player->Move(timer->DelTime());
+		player->Move(timer->DelTime(), input);
 		InteractionPM::CollideWalls(player, level);
+		InteractionPM::InteractWithDoor(player, level, input, camera);
 		player->Update();
 		display->Swap();
 	}

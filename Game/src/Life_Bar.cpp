@@ -40,6 +40,7 @@ void Life_Bar::SetLifeHeards() {
 	}
 	tilemap_info.elem['F'] = life_info.texture_pos[0];
 	tilemap_info.elem['H'] = life_info.texture_pos[1];
+	tilemap_info.elem['E'] = life_info.texture_pos[2];
 	tilemap_info.texture = life_info.texture;
 	tilemap_info.size = vectori2(tilemap_info.map.size(), 1);
 	life_heards = new TileMap(tilemap_info);
@@ -55,7 +56,7 @@ void Life_Bar::Update(int player_life) {
 			int tmp = std::min(del_time, life_info.prev_life % 2 + ((life_info.prev_life + 1) % 2) * 2);
 			del_time -= tmp;
 			life_info.prev_life -= tmp;
-			life_heards->SetMapElem(index, life_info.texture_pos[life_info.prev_life % 2 + ((life_info.prev_life + 1) % 2) * 2]);
+			life_heards->SetMapElem(index, (char)(life_info.prev_life % 2 * (int)'H' + ((life_info.prev_life + 1) % 2) * (int)'E'));
 			--index;
 		}
 	}
@@ -66,7 +67,7 @@ void Life_Bar::Update(int player_life) {
 			int tmp = std::min(del_time, life_info.prev_life % 2 + ((life_info.prev_life + 1) % 2) * 2);
 			del_time -= tmp;
 			life_info.prev_life += tmp;
-			life_heards->SetMapElem(index, life_info.texture_pos[life_info.prev_life % 2]);
+			life_heards->SetMapElem(index, (char)(life_info.prev_life % 2 * 'H' + (life_info.prev_life + 1) % 2 * 'F'));
 			++index;
 		}
 	}

@@ -9,6 +9,7 @@ public:
 	~Camera();
 	matf4x4 GetVP();
 	float GetAspect();
+	void Move(vectori2 dir, float del);
 private:
 	vectorf3 position;
 	vectorf3 rotation;

@@ -14,18 +14,18 @@ public:
 	~TileMap();
 	void Init(const TileMapStruct& tilemap_info);
 	void Draw();
-	void SetMap(const std::string* map, const std::map<char, vectori2>* elem);
+	void SetMap(const std::string map, const std::map<char, vectori2> elem);
+	void SetCamera(Camera* cam);
+	void SetMapElem(int index, char val);
+private:
 	void SendToShader(vectorf2 block_size);
 	void SendOffsets();
-	void SetCamera(Camera* cam);
-	void SetMapElem(int index, const vectori2& val);
-private:
 	Renderer* render;
 	vectori2 size;
 	TextureStruct texture_info;
 	TransformQuad transform;
-	const std::string* map;
-	const std::map<char, vectori2>* elem;
+	std::string map;
+	std::map<char, vectori2> elem;
 };
 
 #endif

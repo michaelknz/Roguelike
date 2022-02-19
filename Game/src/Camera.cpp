@@ -25,3 +25,8 @@ matf4x4 Camera::GetVP() {
 float Camera::GetAspect() {
 	return aspect;
 }
+
+void Camera::Move(vectori2 dir, float del) {
+	position.x += (float)dir.x * del;
+	position.y += (float)dir.y * del;
+}

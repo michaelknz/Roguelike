@@ -3,6 +3,7 @@
 
 #define _USE_MATH_DEFINES
 #include <cmath>
+#include <utility>
 
 struct vectorf2 {
 	float x;
@@ -11,6 +12,8 @@ struct vectorf2 {
 	vectorf2(float x, float y);
 	void SetValue(float x, float y);
 	vectorf2 operator*(float val);
+	vectorf2 operator+(vectorf2 other);
+	vectorf2 operator-(vectorf2 other);
 };
 
 struct vectori2 {
@@ -18,8 +21,11 @@ struct vectori2 {
 	int y;
 	vectori2();
 	vectori2(int x, int y);
+	vectori2(std::pair<int, int> val);
 	void SetValue(int x, int y);
 	vectori2 operator*(int val);
+	vectori2 operator+(vectori2 other);
+	operator std::pair<int, int>();
 };
 
 struct vectorf3 {
@@ -30,6 +36,7 @@ struct vectorf3 {
 	vectorf3(float x, float y, float z);
 	void SetValue(float x, float y, float z);
 	vectorf3 operator*(float val);
+	vectorf3 operator+(vectorf3 other);
 };
 
 struct matf4x4 {

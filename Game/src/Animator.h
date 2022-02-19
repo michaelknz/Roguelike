@@ -8,7 +8,7 @@
 
 class Animator {
 public:
-	Animator(const std::vector<vectorf2>& frames);
+	Animator(const std::vector<vectorf2>& frames, float anim_speed);
 	~Animator();
 	void SetFrames(const std::vector<vectorf2>& frames);
 	void Activate(bool is_on);

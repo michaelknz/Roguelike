@@ -14,8 +14,7 @@ public:
 	~Player();
 	void Update();
 	void SetCamera(Camera* cam);
-	void Update_Move(const SDL_Event& event);
-	void Move(float time);
+	void Move(float time, Input* input);
 private:
 	friend class InteractionPM;
 	void Init(float aspect);

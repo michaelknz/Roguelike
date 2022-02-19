@@ -3,7 +3,7 @@
 TileMap::TileMap(const TileMapStruct& tilemap_info) {
 	render = new Renderer(tilemap_info.transform, tilemap_info.texture);
 	Init(tilemap_info);
-	SetMap(&(tilemap_info.map), &(tilemap_info.elem));
+	SetMap(tilemap_info.map, tilemap_info.elem);
 	SendToShader(tilemap_info.transform.size);
 }
 
@@ -11,9 +11,10 @@ TileMap::~TileMap() {
 	delete render;
 }
 
-void TileMap::SetMap(const std::string* map, const std::map<char, vectori2>* elem) {
+void TileMap::SetMap(const std::string map, const std::map<char, vectori2> elem) {
 	this->map = map;
 	this->elem = elem;
+	SendOffsets();
 }
 
 void TileMap::SetCamera(Camera* cam) {
@@ -37,7 +38,7 @@ void TileMap::Init(const TileMapStruct& tilemap_info) {
 
 void TileMap::SendOffsets() {
 	for (int i = 0; i < size.x * size.y; ++i) {
-		vectori2 tmpi = (*elem).at((*map)[i]);
+		vectori2 tmpi = elem.at(map[i]);
 		tmpi.x *= texture_info.size.x;
 		tmpi.y *= texture_info.size.y;
 		vectorf2 tmp = render->FromPixelsToCoords(tmpi);
@@ -48,15 +49,15 @@ void TileMap::SendOffsets() {
 void TileMap::SendToShader(vectorf2 block_size) {
 	render->SendVecotrf2(block_size, "block_size");
 	render->Sendi1(size.x, "width");
-	SendOffsets();
 }
 
 void TileMap::Draw() {
 	render->DrawInstance(transform, size.x * size.y);
 }
 
-void TileMap::SetMapElem(int index, const vectori2& val) {
-	vectori2 tmpi = val;
+void TileMap::SetMapElem(int index, char val) {
+	vectori2 tmpi = elem.at(val);
+	map[index] = val;
 	tmpi.x *= texture_info.size.x;
 	tmpi.y *= texture_info.size.y;
 	vectorf2 tmp = render->FromPixelsToCoords(tmpi);

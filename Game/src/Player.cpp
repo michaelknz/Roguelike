@@ -25,6 +25,7 @@ void Player::Init(float aspect) {
 		                 1, -1 };
 	transform.z = -0.01f;
 	spec.speed = 1.5f;
+	spec.anim_speed = 0.15f;
 	spec.max_life = 6;
 	spec.cur_life = 6;
 	texture_info.name = "res/Hero.png";
@@ -49,12 +50,8 @@ void Player::Update() {
 	inter->Update(spec.cur_life);
 }
 
-void Player::Update_Move(const SDL_Event& event) {
-	movement->Update_Move(event);
-}
-
-void Player::Move(float time) {
-	del_pos = movement->Move(transform.pos, spec.speed * time);
+void Player::Move(float time, Input* input) {
+	del_pos = movement->Move(transform.pos, spec.speed * time, input);
 }
 
 void Player::SetAnimator() {
@@ -64,7 +61,7 @@ void Player::SetAnimator() {
 		walk_frames[i] = render->FromPixelsToCoords(tmp_walk[i]);
 	}
 
-	animator = new Animator(walk_frames);
+	animator = new Animator(walk_frames, spec.anim_speed);
 }
 
 void Player::SetLifeBar(float aspect) {
@@ -74,7 +71,7 @@ void Player::SetLifeBar(float aspect) {
 	life.texture.name = "res/room.png";
 	life.texture.size = vectori2(8, 8);
 	life.texture.st_pos = vectori2(0, 0);
-	life.transform.size = vectorf2(0.15f, 0.15f);
+	life.transform.size = vectorf2(0.12f, 0.12f);
 	life.transform.shader_name = "TileMapShader";
 	life.transform.rotation = vectorf3(0, 0, 0);
 	life.transform.order= { -1, -1,

@@ -1,9 +1,9 @@
 #include "Animator.h"
 
-Animator::Animator(const std::vector<vectorf2>& frames) {
+Animator::Animator(const std::vector<vectorf2>& frames, float anim_speed) {
 	SetFrames(frames);
 	timer = new Timer;
-	time_to_change = 0.2f;
+	time_to_change = anim_speed;
 	is_on = true;
 	anim_mul = 1;
 	Activate(false);

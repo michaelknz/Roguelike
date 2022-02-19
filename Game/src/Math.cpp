@@ -20,12 +20,24 @@ vectorf2 vectorf2::operator*(float val) {
 	return out;
 }
 
+vectorf2 vectorf2::operator+(vectorf2 other) {
+	return vectorf2(this->x + other.x, this->y + other.y);
+}
+
+vectorf2 vectorf2::operator-(vectorf2 other) {
+	return vectorf2(this->x - other.x, this->y - other.y);
+}
+
 vectori2::vectori2() {
 	SetValue(0, 0);
 }
 
 vectori2::vectori2(int x, int y) {
 	SetValue(x, y);
+}
+
+vectori2::vectori2(std::pair<int, int> val) {
+	SetValue(val.first, val.second);
 }
 
 void vectori2::SetValue(int x, int y) {
@@ -38,6 +50,14 @@ vectori2 vectori2::operator*(int val) {
 	out.x = val * this->x;
 	out.y = val * this->y;
 	return out;
+}
+
+vectori2 vectori2::operator+(vectori2 other) {
+	return vectori2(this->x + other.x, this->y + other.y);
+}
+
+vectori2::operator std::pair<int, int>() {
+	return std::pair<int, int>(this->x, this->y);
 }
 
 vectorf3::vectorf3() {
@@ -60,6 +80,10 @@ vectorf3 vectorf3::operator*(float val) {
 	out.y = y * val;
 	out.z = z * val;
 	return out;
+}
+
+vectorf3 vectorf3::operator+(vectorf3 other) {
+	return vectorf3(this->x + other.x, this->y + other.y, this->z + other.z);
 }
 
 void matf4x4::Init() {
