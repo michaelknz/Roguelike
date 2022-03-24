@@ -44,4 +44,11 @@ struct LifeBarHeartsStruct {
 	std::array<vectori2, 3> texture_pos;
 };
 
+struct InvectoryBarInfo {
+	TextureStruct texture;
+	std::array<vectori2, 2> texture_pos;
+	vectori2 size;
+	vectorf2 pos;
+};
+
 #endif

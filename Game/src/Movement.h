@@ -12,7 +12,7 @@ class Movement {
 public:
 	Movement();
 	~Movement();
-	vectorf2 Move(vectorf2& pos, float speed, Input* input);
+	vectorf2 Move(vectorf2& pos, float speed);
 };
 
 #endif

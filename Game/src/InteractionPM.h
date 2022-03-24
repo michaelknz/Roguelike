@@ -9,7 +9,7 @@ public:
 	InteractionPM();
 	~InteractionPM();
 	static void CollideWalls(Player* player, Level* level);
-	static void InteractWithDoor(Player* player, Level* level, Input* input, Camera* cam);
+	static void InteractWithDoor(Player* player, Level* level, Camera* cam);
 private:
 	static vectorf2 PosInRoom(vectorf2 pos, Room* room);
 	static vectori2 collide_code;

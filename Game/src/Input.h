@@ -9,12 +9,17 @@ class Input {
 public:
 	Input();
 	~Input();
-	void Update_Keyboard(const SDL_Event& event);
-	bool GetButtonState(char but);
+	static void Update(const SDL_Event& event);
+	static bool GetButtonState(char but);
+	static int GetWheelState();
+	static void Init();
 private:
-	std::map<char, int> kmbuttons;
-	std::map<int, char> sdl_to_but;
-	std::vector<bool> buffer;
+	static void Update_Keyboard(const SDL_Event& event);
+	static void Update_MouseWheel(const SDL_Event& event);
+	static std::map<char, int> kmbuttons;
+	static std::map<int, char> sdl_to_but;
+	static std::vector<bool> buffer;
+	static int wheel_move_y;
 };
 
 #endif

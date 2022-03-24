@@ -4,6 +4,7 @@ Player::Player(Camera* cam) {
 	Init(cam->GetAspect());
 	SetCamera(cam);
 	SetLifeBar(cam->GetAspect());
+	SetInventoryBar();
 	SetAnimator();
 }
 
@@ -50,8 +51,8 @@ void Player::Update() {
 	inter->Update(spec.cur_life);
 }
 
-void Player::Move(float time, Input* input) {
-	del_pos = movement->Move(transform.pos, spec.speed * time, input);
+void Player::Move(float time) {
+	del_pos = movement->Move(transform.pos, spec.speed * time);
 }
 
 void Player::SetAnimator() {
@@ -83,4 +84,8 @@ void Player::SetLifeBar(float aspect) {
 	life.transform.z = 0.0;
 	life.transform.pos = vectorf2(-aspect + life.transform.size.x / 2.0f, 1.0f - life.transform.size.y / 2.0f);
 	inter->SetLifeHearts(life);
+}
+
+void Player::SetInventoryBar() {
+	inter->SetInventoryBar();
 }

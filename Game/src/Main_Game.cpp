@@ -1,8 +1,8 @@
 #include "Main_Game.h"
 
 Main_Game::Main_Game() {
-	width = 800;
-	height = 600;
+	width = 1280;
+	height = 960;
 	title = "Game";
 	Set_Camera();
 	Init_Entities();
@@ -17,7 +17,7 @@ void Main_Game::Init_Entities() {
 	player = new Player(camera);
 	level = new Level(camera);
 	timer = new Timer;
-	input = new Input;
+	Input::Init();
 }
 
 void Main_Game::Delete_Entities() {
@@ -26,7 +26,6 @@ void Main_Game::Delete_Entities() {
 	delete level;
 	delete display;
 	delete timer;
-	delete input;
 }
 
 void Main_Game::Set_Camera() {
@@ -41,15 +40,15 @@ void Main_Game::Main_Loop() {
 				break;
 			}
 
-			if (Event.type == SDL_KEYDOWN || Event.type == SDL_KEYUP) {
-				input->Update_Keyboard(Event);
+			if (Event.type == SDL_KEYDOWN || Event.type == SDL_KEYUP || Event.type == SDL_MOUSEWHEEL) {
+				Input::Update(Event);
 			}
 		}
 		display->Clear_Screen(0.0f, 0.0f, 0.0f, 1.0f);
 		level->Update();
-		player->Move(timer->DelTime(), input);
+		player->Move(timer->DelTime());
 		InteractionPM::CollideWalls(player, level);
-		InteractionPM::InteractWithDoor(player, level, input, camera);
+		InteractionPM::InteractWithDoor(player, level, camera);
 		player->Update();
 		display->Swap();
 	}

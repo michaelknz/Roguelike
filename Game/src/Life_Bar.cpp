@@ -28,19 +28,24 @@ void Life_Bar::SetLifeHeards() {
 	TileMapStruct tilemap_info;
 	tilemap_info.transform.pos = life_info.transform.pos;
 	tilemap_info.transform.rotation = life_info.transform.rotation;
+
 	for (int i = 0; i < life_info.transform.order.size(); ++i) {
 		tilemap_info.transform.order[i] = life_info.transform.order[i];
 	}
+
 	tilemap_info.transform.shader_name = life_info.transform.shader_name;
 	tilemap_info.transform.z = life_info.transform.z;
 	tilemap_info.transform.size = life_info.transform.size;
 	tilemap_info.map = std::string(life_info.max_life / 2, 'F');
+
 	if (life_info.max_life % 2) {
 		tilemap_info.map += "H";
 	}
+
 	tilemap_info.elem['F'] = life_info.texture_pos[0];
 	tilemap_info.elem['H'] = life_info.texture_pos[1];
 	tilemap_info.elem['E'] = life_info.texture_pos[2];
+
 	tilemap_info.texture = life_info.texture;
 	tilemap_info.size = vectori2(tilemap_info.map.size(), 1);
 	life_heards = new TileMap(tilemap_info);

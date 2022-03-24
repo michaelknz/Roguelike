@@ -1,7 +1,20 @@
 #include "Input.h"
 
+std::map<char, int> Input::kmbuttons;
+std::map<int, char> Input::sdl_to_but;
+std::vector<bool> Input::buffer;
+int Input::wheel_move_y = 0;
+
 
 Input::Input() {
+	
+}
+
+Input::~Input() {
+
+}
+
+void Input::Init() {
 	kmbuttons['w'] = 0;
 	kmbuttons['a'] = 1;
 	kmbuttons['s'] = 2;
@@ -20,8 +33,9 @@ Input::Input() {
 	}
 }
 
-Input::~Input() {
-
+void Input::Update(const SDL_Event& event) {
+	Update_Keyboard(event);
+	Update_MouseWheel(event);
 }
 
 void Input::Update_Keyboard(const SDL_Event& event) {
@@ -38,6 +52,19 @@ void Input::Update_Keyboard(const SDL_Event& event) {
 	}
 }
 
+void Input::Update_MouseWheel(const SDL_Event& event) {
+	if (event.type == SDL_MOUSEWHEEL) {
+		wheel_move_y += event.wheel.y;
+		if (event.wheel.y == 0) {
+			wheel_move_y = 0;
+		}
+	}
+}
+
 bool Input::GetButtonState(char but) {
 	return buffer[kmbuttons[but]];
+}
+
+int Input::GetWheelState() {
+	return wheel_move_y;
 }

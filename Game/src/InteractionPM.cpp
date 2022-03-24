@@ -76,7 +76,7 @@ vectorf2 InteractionPM::PosInRoom(vectorf2 pos, Room* room) {
 	return pos_in_room;
 }
 
-void InteractionPM::InteractWithDoor(Player* player, Level* level, Input* input, Camera* cam) {
+void InteractionPM::InteractWithDoor(Player* player, Level* level, Camera* cam) {
 	Room* room = level->GetCurRoom();
 
 	vectorf2 pos_in_room_l = PosInRoom(player->transform.pos - vectorf2(player->transform.size.x / 4.0f, 0.0f), room);
@@ -91,7 +91,7 @@ void InteractionPM::InteractWithDoor(Player* player, Level* level, Input* input,
 
 	float player_del = 2.4f;
 
-	bool f_state = input->GetButtonState('f');
+	bool f_state = Input::GetButtonState('f');
 	if (!f_state) {
 		is_f = true;
 	}

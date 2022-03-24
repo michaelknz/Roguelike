@@ -8,10 +8,10 @@ Movement::~Movement() {
 
 }
 
-vectorf2 Movement::Move(vectorf2& pos, float speed, Input* input) {
+vectorf2 Movement::Move(vectorf2& pos, float speed) {
 	vectorf2 dir;
-	dir.x = input->GetButtonState('d') - input->GetButtonState('a');
-	dir.y = input->GetButtonState('w') - input->GetButtonState('s');
+	dir.x = Input::GetButtonState('d') - Input::GetButtonState('a');
+	dir.y = Input::GetButtonState('w') - Input::GetButtonState('s');
 	if (dir.x != 0 || dir.y != 0) {
 		dir = dir * (1.0f / sqrt(dir.x * dir.x + dir.y * dir.y));
 	}

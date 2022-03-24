@@ -14,12 +14,13 @@ public:
 	~Player();
 	void Update();
 	void SetCamera(Camera* cam);
-	void Move(float time, Input* input);
+	void Move(float time);
 private:
 	friend class InteractionPM;
 	void Init(float aspect);
 	void SetAnimator();
 	void SetLifeBar(float aspect);
+	void SetInventoryBar();
 	TransformQuad transform;
 	TextureStruct texture_info;
 	CharSpec spec;
