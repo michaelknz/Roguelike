@@ -7,24 +7,27 @@
 #include <map>
 #include <set>
 #include "Struct.h"
+#include "Entity.h"
 
-class Room {
+class Room: public Entity {
 public:
-	Room(const vectori2& coord);
+	Room(const Transform& transform, Camera* cam, const vectori2& coord);
 	~Room();
 	virtual void SetMap();
 	void SetElem();
-	void Draw();
-	void SetCamera(Camera* cam);
 	void SetDoor(char side);
+	vectori2 GetCoord();
+	void Update() override;
 private:
 	friend class InteractionPM;
+	void Draw();
 	void Init(const vectori2& coord);
 	void SetTileMap();
 	void SetWalls();
 	void SetDoors();
 	TileMapStruct tilemap_info;
 	TileMap* tilemap;
+	vectori2 coords;
 	std::set<char> walls;
 	std::set<char> doors;
 };

@@ -29,7 +29,6 @@ void PlayerInterface::SetInventoryBar() {
 	inv_info.size = vectori2(5, 1);
 	inv_info.texture.name = "res/room.png";
 	inv_info.texture.size = vectori2(8, 8);
-	inv_info.texture.st_pos = vectori2(0, 0);
 	inv = new Inventory_Bar(aspect, inv_info);
 }
 

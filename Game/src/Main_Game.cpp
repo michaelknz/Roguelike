@@ -1,4 +1,5 @@
 #include "Main_Game.h"
+#include "InteractionPM.h"
 
 Main_Game::Main_Game() {
 	width = 1280;
@@ -14,9 +15,10 @@ Main_Game::~Main_Game() {
 
 void Main_Game::Init_Entities() {
 	display = new Display(width, height, title);
-	player = new Player(camera);
+	player = new Player(Transform(vectorf2()), camera);
 	level = new Level(camera);
-	timer = new Timer;
+	scene = Scene::getInstance();
+	SetScene();
 	Input::Init();
 }
 
@@ -25,7 +27,7 @@ void Main_Game::Delete_Entities() {
 	delete player;
 	delete level;
 	delete display;
-	delete timer;
+	Scene::deleteInstance();
 }
 
 void Main_Game::Set_Camera() {
@@ -45,11 +47,28 @@ void Main_Game::Main_Loop() {
 			}
 		}
 		display->Clear_Screen(0.0f, 0.0f, 0.0f, 1.0f);
-		level->Update();
-		player->Move(timer->DelTime());
-		InteractionPM::CollideWalls(player, level);
-		InteractionPM::InteractWithDoor(player, level, camera);
-		player->Update();
+		scene->UpdateAllEntities();
+		UpdateScene();
 		display->Swap();
 	}
+}
+
+void Main_Game::UpdateScene() {
+	vectori2 room_move = InteractionPM::GetRoomMove();
+	if (room_move.x != 0 || room_move.y != 0) {
+		scene->Clear_Scene();
+		level->SetCurRoom(level->GetCurRoom()->GetCoord() + room_move);
+		scene->AddEntity(level->GetCurRoom());
+		scene->AddEntity(player);
+		player->SetCurRoom();
+		InteractionPM::RoomMoveToZero();
+	}
+}
+
+void Main_Game::SetScene() {
+	scene->Clear_Scene();
+	scene->AddEntity(level->GetCurRoom());
+	scene->AddEntity(player);
+	player->SetCurRoom();
+	InteractionPM::RoomMoveToZero();
 }

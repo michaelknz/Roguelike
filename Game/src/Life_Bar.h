@@ -14,6 +14,7 @@ public:
 private:
 	void SetCamera();
 	float aspect;
+	vectorf2 pos;
 	TileMap* life_heards;
 	LifeBarHeartsStruct life_info;
 	Camera* camera;

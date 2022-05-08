@@ -1,11 +1,12 @@
 #include "Renderer.h"
 
-Renderer::Renderer(const TransformQuad& transform, const TextureStruct& texture_info) {
+Renderer::Renderer(const TransformQuad& transform, const TextureStruct& texture_info, Camera* cam) {
 	shader = new Shader(transform.shader_name);
 	quad = new Quad;
 	texture = nullptr;
 	SetTexture(texture_info, transform);
 	SetQuad(transform);
+	SetCamera(cam);
 }
 
 Renderer::~Renderer() {
@@ -16,15 +17,17 @@ Renderer::~Renderer() {
 	}
 }
 
-void Renderer::Draw(const TransformQuad& transform) {
-	SendMVP(transform);
+void Renderer::Draw(Transform transform) {
+	quad->UpdateQuad(transform);
+	SendMVP(quad->GetTransformQuad());
 	BindAll();
 	quad->DrawQuad();
 	UnbindAll();
 }
 
-void Renderer::DrawInstance(const TransformQuad& transform, int size) {
-	SendMVP(transform);
+void Renderer::DrawInstance(Transform transform, int size) {
+	quad->UpdateQuad(transform);
+	SendMVP(quad->GetTransformQuad());
 	BindAll();
 	quad->DrawInstacedQuad(size);
 	UnbindAll();
@@ -59,11 +62,11 @@ void Renderer::SetTexture(const TextureStruct& texture_info, const TransformQuad
 	shader->Sendi1(0, "Texture");
 }
 
-void Renderer::SendMVP(const TransformQuad& transform) {
+void Renderer::SendMVP(const TransformQuad* transform) {
 	matf4x4 model;
 	model.Init();
-	MatrixOp::simple_rotate(model, transform.rotation);
-	MatrixOp::translate(model, vectorf3(transform.pos.x, transform.pos.y, transform.z));
+	MatrixOp::simple_rotate(model, transform->rotation);
+	MatrixOp::translate(model, vectorf3(transform->pos.x, transform->pos.y, transform->z));
 	SendMatrixf4x4(camera->GetVP() * model, "mvp");
 }
 

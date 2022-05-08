@@ -14,8 +14,11 @@ public:
 	void SendCoords(const std::array<float, 12>& coords);
 	void DrawQuad();
 	void DrawInstacedQuad(int size);
+	TransformQuad* GetTransformQuad();
+	void UpdateQuad(Transform transform);
 private:
 	Mesh* mesh;
+	TransformQuad transform;
 };
 
 #endif

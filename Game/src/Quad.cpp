@@ -18,6 +18,11 @@ void Quad::SendVertices(const TransformQuad& transform) {
 				  (float)(transform.order[10]) * transform.size.x / 2.0f, (float)(transform.order[11]) * transform.size.y / 2.0f, 0 };
 
 	mesh->SetMesh<18>(verticies);
+	this->transform = transform;
+}
+
+TransformQuad* Quad::GetTransformQuad() {
+	return &transform;
 }
 
 void Quad::DrawQuad() {
@@ -30,4 +35,9 @@ void Quad::DrawInstacedQuad(int size) {
 
 void Quad::SendCoords(const std::array<float, 12>& coords) {
 	mesh->SetTextureCoords<12>(coords);
+}
+
+void Quad::UpdateQuad(Transform transform) {
+	this->transform.pos = transform.pos;
+	this->transform.rotation = vectorf3(transform.rotation.x, transform.rotation.y, 0);
 }

@@ -7,29 +7,31 @@
 #include "Animator.h"
 #include "PlayerInterface.h"
 #include "Struct.h"
+#include "Scene.h"
+#include "Room.h"
 
-class Player {
+class Player: public Entity {
 public:
-	Player(Camera* cam);
+	Player(const Transform& transform, Camera* cam);
 	~Player();
-	void Update();
-	void SetCamera(Camera* cam);
-	void Move(float time);
+	void Update() override;
+	void SetCurRoom();
 private:
 	friend class InteractionPM;
-	void Init(float aspect);
+	void Init();
 	void SetAnimator();
-	void SetLifeBar(float aspect);
+	void SetLifeBar();
 	void SetInventoryBar();
-	TransformQuad transform;
+	void Move(float time);
 	TextureStruct texture_info;
 	CharSpec spec;
-	vectorf2 del_pos;
-	std::vector<vectorf2> walk_frames;
+	Room* cur_room;
+	vectorf2 size;
 	Renderer* render;
 	Movement* movement;
 	Animator* animator;
 	PlayerInterface* inter;
+	Timer* timer;
 };
 
 #endif

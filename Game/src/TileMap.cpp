@@ -1,7 +1,7 @@
 #include "TileMap.h"
 
-TileMap::TileMap(const TileMapStruct& tilemap_info) {
-	render = new Renderer(tilemap_info.transform, tilemap_info.texture);
+TileMap::TileMap(const TileMapStruct& tilemap_info, Camera* cam) {
+	render = new Renderer(tilemap_info.transform, tilemap_info.texture, cam);
 	Init(tilemap_info);
 	SetMap(tilemap_info.map, tilemap_info.elem);
 	SendToShader(tilemap_info.transform.size);
@@ -15,10 +15,6 @@ void TileMap::SetMap(const std::string map, const std::map<char, vectori2> elem)
 	this->map = map;
 	this->elem = elem;
 	SendOffsets();
-}
-
-void TileMap::SetCamera(Camera* cam) {
-	render->SetCamera(cam);
 }
 
 void TileMap::Init(const TileMapStruct& tilemap_info) {
@@ -51,7 +47,7 @@ void TileMap::SendToShader(vectorf2 block_size) {
 	render->Sendi1(size.x, "width");
 }
 
-void TileMap::Draw() {
+void TileMap::Draw(Transform transform) {
 	render->DrawInstance(transform, size.x * size.y);
 }
 

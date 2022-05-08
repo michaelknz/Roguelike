@@ -10,12 +10,11 @@
 
 class TileMap {
 public:
-	TileMap(const TileMapStruct& tilemap_info);
+	TileMap(const TileMapStruct& tilemap_info, Camera* cam);
 	~TileMap();
 	void Init(const TileMapStruct& tilemap_info);
-	void Draw();
+	void Draw(Transform transform);
 	void SetMap(const std::string map, const std::map<char, vectori2> elem);
-	void SetCamera(Camera* cam);
 	void SetMapElem(int index, char val);
 private:
 	void SendToShader(vectorf2 block_size);

@@ -1,12 +1,13 @@
 #include "Room.h"
 
-Room::Room(const vectori2& coord) {
+Room::Room(const Transform& transform, Camera* cam, const vectori2& coord): Entity(transform, cam) {
 	Init(coord);
 	SetMap();
 	SetElem();
 	SetWalls();
 	SetDoors();
 	SetTileMap();
+	SetTag("Room");
 }
 
 Room::~Room() {
@@ -14,22 +15,18 @@ Room::~Room() {
 }
 
 void Room::Init(const vectori2& coord) {
-	tilemap_info.transform.rotation.SetValue(0, 0, 0);
 	tilemap_info.transform.size.SetValue(0.15, 0.15);
-	tilemap_info.transform.order = { -1, -1,
-		                             -1,  1,
-		                              1,  1,
-		                             -1, -1,
-		                              1,  1,
-		                              1, -1 };
-	tilemap_info.transform.shader_name = "TileMapShader";
-	tilemap_info.transform.z = 0;
 	tilemap_info.size.SetValue(25, 16);
-	tilemap_info.transform.pos.SetValue(-1.8f + (float)coord.x * tilemap_info.transform.size.x * (float)tilemap_info.size.x, 
-		                                 1.2f + (float)coord.y * tilemap_info.transform.size.y * (float)tilemap_info.size.y);
+	tilemap_info.transform.pos.SetValue(transform.pos.x + (float)coord.x * tilemap_info.transform.size.x * (float)tilemap_info.size.x, 
+		                                transform.pos.y + (float)coord.y * tilemap_info.transform.size.y * (float)tilemap_info.size.y);
+	transform.pos = tilemap_info.transform.pos;
 	tilemap_info.texture.size.SetValue(8, 8);
-	tilemap_info.texture.st_pos.SetValue(0, 0);
 	tilemap_info.texture.name = "res/room.png";
+	coords = coord;
+}
+
+void Room::Update() {
+	Draw();
 }
 
 void Room::SetMap() {
@@ -66,16 +63,12 @@ void Room::SetElem() {
 	tilemap_info.elem['p'] = vectori2(12, 6);
 }
 
-void Room::SetCamera(Camera* cam) {
-	tilemap->SetCamera(cam);
-}
-
 void Room::Draw() {
-	tilemap->Draw();
+	tilemap->Draw(transform);
 }
 
 void Room::SetTileMap() {
-	tilemap = new TileMap(tilemap_info);
+	tilemap = new TileMap(tilemap_info, camera);
 }
 
 void Room::SetWalls() {
@@ -125,4 +118,8 @@ void Room::SetDoor(char side) {
 	default:
 		break;
 	}
+}
+
+vectori2 Room::GetCoord() {
+	return coords;
 }

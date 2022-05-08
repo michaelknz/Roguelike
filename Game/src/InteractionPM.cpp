@@ -3,6 +3,7 @@
 
 vectori2 InteractionPM::collide_code = vectori2(0, 0);
 bool InteractionPM::is_f = true;
+vectori2 InteractionPM::room_move = vectori2();
 
 InteractionPM::InteractionPM() {
 
@@ -12,12 +13,12 @@ InteractionPM::~InteractionPM() {
 
 }
 
-void InteractionPM::CollideWalls(Player* player, Level* level) {
-	Room* room = level->GetCurRoom();
-	vectorf2 pos_in_room_l = PosInRoom(player->transform.pos - vectorf2(player->transform.size.x / 4.0f, 0.0f), room);
-	vectorf2 pos_in_room_r = PosInRoom(player->transform.pos + vectorf2(player->transform.size.x / 4.0f, 0.0f), room);
-	vectorf2 pos_in_room_u = PosInRoom(player->transform.pos + vectorf2(0.0f, player->transform.size.y / 4.0f), room);
-	vectorf2 pos_in_room_d = PosInRoom(player->transform.pos - vectorf2(0.0f, player->transform.size.y / 2.0f), room);
+void InteractionPM::CollideWalls(Player* player, Room* room, vectorf2 del_pos) {
+
+	vectorf2 pos_in_room_l = PosInRoom(player->transform.pos - vectorf2(player->size.x / 4.0f, 0.0f), room);
+	vectorf2 pos_in_room_r = PosInRoom(player->transform.pos + vectorf2(player->size.x / 4.0f, 0.0f), room);
+	vectorf2 pos_in_room_u = PosInRoom(player->transform.pos + vectorf2(0.0f, player->size.y / 4.0f), room);
+	vectorf2 pos_in_room_d = PosInRoom(player->transform.pos - vectorf2(0.0f, player->size.y / 2.0f), room);
 
 	vectori2 pos_in_room_quads_l((int)pos_in_room_l.x, (int)pos_in_room_l.y);
 	vectori2 pos_in_room_quads_r((int)pos_in_room_r.x, (int)pos_in_room_r.y);
@@ -29,14 +30,14 @@ void InteractionPM::CollideWalls(Player* player, Level* level) {
 	bool flag_u = room->walls.find(room->tilemap_info.map[pos_in_room_quads_u.y * room->tilemap_info.size.x + pos_in_room_quads_u.x]) != room->walls.end();
 	bool flag_d = room->walls.find(room->tilemap_info.map[pos_in_room_quads_d.y * room->tilemap_info.size.x + pos_in_room_quads_d.x]) != room->walls.end();
 
-	if ((collide_code.x == -1 && player->del_pos.x < 0) || (collide_code.x == 1 && player->del_pos.x > 0)) {
-		player->transform.pos.x -= player->del_pos.x;
-		player->del_pos.x = 0;
+	if ((collide_code.x == -1 && del_pos.x < 0) || (collide_code.x == 1 && del_pos.x > 0)) {
+		player->transform.pos.x -= del_pos.x;
+		del_pos.x = 0;
 	}
 
-	if ((collide_code.y == -1 && player->del_pos.y > 0) || (collide_code.y == 1 && player->del_pos.y < 0)) {
-		player->transform.pos.y -= player->del_pos.y;
-		player->del_pos.y = 0;
+	if ((collide_code.y == -1 && del_pos.y > 0) || (collide_code.y == 1 && del_pos.y < 0)) {
+		player->transform.pos.y -= del_pos.y;
+		del_pos.y = 0;
 	}
 
 	if (flag_l && collide_code.x != -1) {
@@ -76,20 +77,19 @@ vectorf2 InteractionPM::PosInRoom(vectorf2 pos, Room* room) {
 	return pos_in_room;
 }
 
-void InteractionPM::InteractWithDoor(Player* player, Level* level, Camera* cam) {
-	Room* room = level->GetCurRoom();
+void InteractionPM::InteractWithDoor(Player* player, Room* room, Camera* cam) {
 
-	vectorf2 pos_in_room_l = PosInRoom(player->transform.pos - vectorf2(player->transform.size.x / 4.0f, 0.0f), room);
-	vectorf2 pos_in_room_r = PosInRoom(player->transform.pos + vectorf2(player->transform.size.x / 4.0f, 0.0f), room);
-	vectorf2 pos_in_room_u = PosInRoom(player->transform.pos + vectorf2(0.0f, player->transform.size.y / 4.0f), room);
-	vectorf2 pos_in_room_d = PosInRoom(player->transform.pos - vectorf2(0.0f, player->transform.size.y / 2.0f), room);
+	vectorf2 pos_in_room_l = PosInRoom(player->transform.pos - vectorf2(player->size.x / 4.0f, 0.0f), room);
+	vectorf2 pos_in_room_r = PosInRoom(player->transform.pos + vectorf2(player->size.x / 4.0f, 0.0f), room);
+	vectorf2 pos_in_room_u = PosInRoom(player->transform.pos + vectorf2(0.0f, player->size.y / 4.0f), room);
+	vectorf2 pos_in_room_d = PosInRoom(player->transform.pos - vectorf2(0.0f, player->size.y / 2.0f), room);
 
 	pos_in_room_l.x -= 0.5f;
 	pos_in_room_r.x += 0.5f;
 	pos_in_room_u.y -= 0.5f;
 	pos_in_room_d.y += 0.5f;
 
-	float player_del = 2.4f;
+	float player_del = 2.8f;
 
 	bool f_state = Input::GetButtonState('f');
 	if (!f_state) {
@@ -100,7 +100,7 @@ void InteractionPM::InteractWithDoor(Player* player, Level* level, Camera* cam) 
 		if (f_state && is_f) {
 			is_f = false;
 			cam->Move(vectori2(-1, 0), (float)room->tilemap_info.size.x * room->tilemap_info.transform.size.x);
-			level->SetCurRoom(level->GetCurRoomCoord() + vectori2(-1, 0));
+			room_move = vectori2(-1, 0);
 			player->transform.pos.x -= room->tilemap_info.transform.size.x * player_del;
 		}
 	}
@@ -109,7 +109,7 @@ void InteractionPM::InteractWithDoor(Player* player, Level* level, Camera* cam) 
 		if (f_state && is_f) {
 			is_f = false;
 			cam->Move(vectori2(1, 0), (float)room->tilemap_info.size.x * room->tilemap_info.transform.size.x);
-			level->SetCurRoom(level->GetCurRoomCoord() + vectori2(1, 0));
+			room_move = vectori2(1, 0);
 			player->transform.pos.x += room->tilemap_info.transform.size.x * player_del;
 		}
 	}
@@ -118,7 +118,7 @@ void InteractionPM::InteractWithDoor(Player* player, Level* level, Camera* cam) 
 		if (f_state && is_f) {
 			is_f = false;
 			cam->Move(vectori2(0, 1), (float)room->tilemap_info.size.y * room->tilemap_info.transform.size.y);
-			level->SetCurRoom(level->GetCurRoomCoord() + vectori2(0, 1));
+			room_move = vectori2(0, 1);
 			player->transform.pos.y += room->tilemap_info.transform.size.y * player_del;
 		}
 	}
@@ -127,8 +127,16 @@ void InteractionPM::InteractWithDoor(Player* player, Level* level, Camera* cam) 
 		if (f_state && is_f) {
 			is_f = false;
 			cam->Move(vectori2(0, -1), (float)room->tilemap_info.size.y * room->tilemap_info.transform.size.y);
-			level->SetCurRoom(level->GetCurRoomCoord() + vectori2(0, -1));
+			room_move = vectori2(0, -1);
 			player->transform.pos.y -= room->tilemap_info.transform.size.y * player_del;
 		}
 	}
+}
+
+vectori2 InteractionPM::GetRoomMove() {
+	return room_move;
+}
+
+void InteractionPM::RoomMoveToZero() {
+	room_move = vectori2();
 }

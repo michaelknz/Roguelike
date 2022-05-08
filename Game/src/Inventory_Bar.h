@@ -11,6 +11,7 @@ public:
 	void Update();
 private:
 	TileMap* SmallTileMap;
+	vectorf2 pos;
 	void SetCamera(float aspect);
 	void SetTileMap(const InvectoryBarInfo& inv_bar_info);
 	void Draw();

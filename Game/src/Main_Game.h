@@ -6,7 +6,7 @@
 #include "Camera.h"
 #include "Timer.h"
 #include "Level.h"
-#include "InteractionPM.h"
+#include "Scene.h"
 
 class Main_Game {
 public:
@@ -17,11 +17,13 @@ private:
 	void Init_Entities();
 	void Delete_Entities();
 	void Set_Camera();
+	void UpdateScene();
+	void SetScene();
 	Display* display;
 	Player* player;
 	Level* level;
 	Camera* camera;
-	Timer* timer;
+	Scene* scene;
 	int width;
 	int height;
 	std::string title;

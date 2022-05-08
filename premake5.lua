@@ -14,7 +14,8 @@ project "Game"
 	"%{wks.location}/include/glew", "%{wks.location}/include/soil"}
 	postbuildcommands{
 		("{COPY} %{wks.location}/dlls/ %{wks.location}bin/%{prj.name}/%{cfg.buildcfg}"),
-		("{COPY} %{wks.location}%{prj.name}/shaders/ %{wks.location}bin/%{prj.name}/%{cfg.buildcfg}/shaders")
+		("{COPY} %{wks.location}%{prj.name}/shaders/ %{wks.location}bin/%{prj.name}/%{cfg.buildcfg}/shaders"),
+		("{COPY} %{wks.location}%{prj.name}/res/ %{wks.location}bin/%{prj.name}/%{cfg.buildcfg}/res")
 	}
 	vpaths {
     ["Headers"] = { "**.h", "**.hpp" },

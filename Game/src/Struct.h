@@ -13,12 +13,21 @@ struct TransformQuad {
 	std::array<int, 12> order;
 	std::string shader_name;
 	float z;
+	TransformQuad();
+};
+
+struct Transform {
+	vectorf2 pos;
+	vectorf2 rotation;
+	Transform(vectorf2 pos);
+	Transform();
 };
 
 struct TextureStruct {
 	std::string name;
 	vectori2 size;
 	vectori2 st_pos;
+	TextureStruct();
 };
 
 struct TileMapStruct {
@@ -27,6 +36,7 @@ struct TileMapStruct {
 	vectori2 size;
 	std::map<char, vectori2> elem;
 	std::string map;
+	TileMapStruct();
 };
 
 struct CharSpec {
@@ -34,6 +44,7 @@ struct CharSpec {
 	int cur_life;
 	float speed;
 	float anim_speed;
+	CharSpec();
 };
 
 struct LifeBarHeartsStruct {
@@ -42,6 +53,7 @@ struct LifeBarHeartsStruct {
 	int max_life;
 	int prev_life;
 	std::array<vectori2, 3> texture_pos;
+	LifeBarHeartsStruct();
 };
 
 struct InvectoryBarInfo {
@@ -49,6 +61,7 @@ struct InvectoryBarInfo {
 	std::array<vectori2, 2> texture_pos;
 	vectori2 size;
 	vectorf2 pos;
+	InvectoryBarInfo();
 };
 
 #endif

@@ -27,6 +27,7 @@ Life_Bar::~Life_Bar() {
 void Life_Bar::SetLifeHeards() {
 	TileMapStruct tilemap_info;
 	tilemap_info.transform.pos = life_info.transform.pos;
+	pos = life_info.transform.pos;
 	tilemap_info.transform.rotation = life_info.transform.rotation;
 
 	for (int i = 0; i < life_info.transform.order.size(); ++i) {
@@ -48,8 +49,7 @@ void Life_Bar::SetLifeHeards() {
 
 	tilemap_info.texture = life_info.texture;
 	tilemap_info.size = vectori2(tilemap_info.map.size(), 1);
-	life_heards = new TileMap(tilemap_info);
-	life_heards->SetCamera(camera);
+	life_heards = new TileMap(tilemap_info, camera);
 }
 
 void Life_Bar::Update(int player_life) {
@@ -77,7 +77,7 @@ void Life_Bar::Update(int player_life) {
 		}
 	}
 
-	life_heards->Draw();
+	life_heards->Draw(Transform(pos));
 }
 
 void Life_Bar::SetCamera() {

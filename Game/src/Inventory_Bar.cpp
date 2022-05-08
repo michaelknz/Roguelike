@@ -22,6 +22,7 @@ void Inventory_Bar::SetTileMap(const InvectoryBarInfo& inv_bar_info) {
 	TileMapStruct info;
 
 	info.transform.pos = inv_bar_info.pos;
+	pos = inv_bar_info.pos;
 	info.transform.rotation = vectorf3();
 	info.transform.order = { -1, -1,
 							-1,  1,
@@ -42,12 +43,11 @@ void Inventory_Bar::SetTileMap(const InvectoryBarInfo& inv_bar_info) {
 		info.map += "U";
 	}
 	info.map[0] = 'A';
-	SmallTileMap = new TileMap(info);
-	SmallTileMap->SetCamera(camera);
+	SmallTileMap = new TileMap(info, camera);
 }
 
 void Inventory_Bar::Draw() {
-	SmallTileMap->Draw();
+	SmallTileMap->Draw(Transform(pos));
 }
 
 void Inventory_Bar::MoveActiveBar() {

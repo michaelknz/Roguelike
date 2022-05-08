@@ -6,33 +6,19 @@
 
 Level::Level(Camera* cam) {
 	rooms_col = 5;
-	cur_room = new Room(vectori2());
+	camera = cam;
+	cur_room = new Room(Transform(vectorf2(-1.8f, 1.2f)), cam, vectori2());
 	rooms[(std::pair<int,int>)vectori2()] = cur_room;
 	cur_room_coord.SetValue(0, 0);
 	GenLevel();
-	SetCamera(cam);
 }
 
 Level::~Level() {
 	delete cur_room;
 }
 
-void Level::SetCamera(Camera* cam) {
-	for (std::map<std::pair<int, int>, Room*>::iterator i = rooms.begin(); i != rooms.end(); ++i) {
-		(*i).second->SetCamera(cam);
-	}
-}
-
-void Level::Update() {
-	cur_room->Draw();
-}
-
 Room* Level::GetCurRoom() {
 	return cur_room;
-}
-
-vectori2 Level::GetCurRoomCoord() {
-	return cur_room_coord;
 }
 
 void Level::SetCurRoom(vectori2 val) {
@@ -62,7 +48,7 @@ void Level::GenLevel() {
 				}
 
 				if (tcol <= 1 && Random::GetRandomInt(0, 1) == 1) {
-					rooms[cur_coord + sides[i]] = new Room(cur_coord + sides[i]);
+					rooms[cur_coord + sides[i]] = new Room(Transform(vectorf2(-1.8f, 1.2f)), camera, cur_coord + sides[i]);
 					cur_col--;
 					SetDoors(cur_coord, sides[i]);
 				}
