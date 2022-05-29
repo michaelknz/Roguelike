@@ -7,11 +7,14 @@ Mesh::Mesh() {
 	glGenBuffers(1, &vbo);
 	glGenBuffers(1, &vbo_texture);
 
+	Count = 0;
+	tex_count = 0;
+
 }
 
 Mesh::~Mesh() {
 	glDeleteBuffers(1, &vbo);
-	glGenBuffers(1, &vbo_texture);
+	glDeleteBuffers(1, &vbo_texture);
 	glDeleteVertexArrays(1, &vao);
 }
 

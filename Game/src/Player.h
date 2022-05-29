@@ -23,6 +23,9 @@ private:
 	void SetLifeBar();
 	void SetInventoryBar();
 	void Move(float time);
+	void SetColliders();
+	void CollideWalls(vectorf2 del_pos);
+	float CountDelPos(Collider* other, vectorf2 dir);
 	TextureStruct texture_info;
 	CharSpec spec;
 	Room* cur_room;

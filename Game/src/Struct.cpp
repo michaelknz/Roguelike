@@ -22,6 +22,7 @@ TransformQuad::TransformQuad() {
 			   1,  1,
 			   1, -1 };
 	z = 0;
+	is_gs = false;
 }
 
 TextureStruct::TextureStruct() {

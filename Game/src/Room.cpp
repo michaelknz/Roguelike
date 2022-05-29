@@ -1,4 +1,6 @@
 #include "Room.h"
+#include "RectCollider.h"
+#include "Log.h"
 
 Room::Room(const Transform& transform, Camera* cam, const vectori2& coord): Entity(transform, cam) {
 	Init(coord);
@@ -7,6 +9,7 @@ Room::Room(const Transform& transform, Camera* cam, const vectori2& coord): Enti
 	SetWalls();
 	SetDoors();
 	SetTileMap();
+	SetColliders();
 	SetTag("Room");
 }
 
@@ -27,6 +30,9 @@ void Room::Init(const vectori2& coord) {
 
 void Room::Update() {
 	Draw();
+	for (int i = 0; i < 4; ++i) {
+		Log::VisCollider(colliders[i], camera);
+	}
 }
 
 void Room::SetMap() {
@@ -122,4 +128,39 @@ void Room::SetDoor(char side) {
 
 vectori2 Room::GetCoord() {
 	return coords;
+}
+
+void Room::SetColliders() {
+	vectorf2 st = vectorf2(-tilemap_info.transform.size.x / 2.0f, tilemap_info.transform.size.y / 2.0f);
+	vectori2 fsize = tilemap_info.size;
+	vectorf2 tsize = tilemap_info.transform.size;
+	colliders.push_back(new RectCollider(&transform,
+		Rectangle(
+			st,
+			vectorf2(st.x + tsize.x * (0.75f), st.y),
+			vectorf2(st.x + tsize.x * (0.75f), st.y - ((float)fsize.y * tsize.y)),
+			vectorf2(st.x, st.y - ((float)fsize.y * tsize.y))),
+		"wallv", this));
+	colliders.push_back(new RectCollider(&transform,
+		Rectangle(
+			st,
+			vectorf2(st.x + ((float)fsize.x * tsize.x), st.y),
+			vectorf2(st.x + ((float)fsize.x * tsize.x), st.y - tsize.y),
+			vectorf2(st.x, st.y - tsize.y)),
+		"wallh", this));
+	colliders.push_back(new RectCollider(&transform,
+		Rectangle(
+			vectorf2(st.x + ((float)(fsize.x - 1) * tsize.x + tsize.x * (0.25f)), st.y),
+			vectorf2(st.x + ((float)fsize.x * tsize.x), st.y),
+			vectorf2(st.x + ((float)fsize.x * tsize.x), st.y - ((float)fsize.y * tsize.y)),
+			vectorf2(st.x + ((float)(fsize.x - 1) * tsize.x + tsize.x * (0.25f)), st.y - ((float)fsize.y * tsize.y))),
+		"wallv", this));
+	colliders.push_back(new RectCollider(&transform,
+		Rectangle(
+			vectorf2(st.x + ((float)fsize.x * tsize.x), st.y - ((float)(fsize.y - 1) * tsize.y)),
+			vectorf2(st.x + ((float)fsize.x * tsize.x), st.y - ((float)fsize.y * tsize.y)),
+			vectorf2(st.x, st.y - ((float)fsize.y * tsize.y)),
+			vectorf2(st.x, st.y - ((float)(fsize.y - 1) * tsize.y))
+		),
+		"wallh", this));
 }

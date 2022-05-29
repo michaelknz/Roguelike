@@ -11,10 +11,11 @@ public:
 	template<int T>
 	void SetMesh(std::array<float, T> vertices) {
 
-		Count = vertices.size();
-
 		glBindVertexArray(vao);
+
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+
+		Count = vertices.size();
 
 		glBufferData(GL_ARRAY_BUFFER, Count * sizeof(float), &vertices[0], GL_STATIC_DRAW);
 
@@ -27,7 +28,10 @@ public:
 	template<int T>
 	void SetTextureCoords(std::array<float, T> coords) {
 		glBindVertexArray(vao);
+
 		glBindBuffer(GL_ARRAY_BUFFER, vbo_texture);
+
+		tex_count = coords.size();
 
 		glBufferData(GL_ARRAY_BUFFER, coords.size() * sizeof(float), &coords[0], GL_STATIC_DRAW);
 
@@ -43,6 +47,7 @@ private:
 	GLuint vbo;
 	GLuint vbo_texture;
 	unsigned int Count;
+	unsigned int tex_count;
 };
 
 #endif

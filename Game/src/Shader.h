@@ -8,7 +8,7 @@
 
 class Shader {
 public:
-	Shader(const std::string& shader_name);
+	Shader(const std::string& shader_name, bool is_gs);
 	~Shader();
 	void bind();
 	void unbind();
@@ -20,8 +20,9 @@ public:
 private:
 	std::string read_shader(const std::string& shader_name);
 	GLuint Create_Shader(const std::string& text, GLuint type);
-	GLuint shaders[2];
+	GLuint shaders[3];
 	GLuint prog;
+	bool is_gs;
 };
 
 #endif

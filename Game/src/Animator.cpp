@@ -23,7 +23,7 @@ void Animator::SetFrames(const std::vector<vectorf2>& frames) {
 void Animator::Activate(bool is_on) {
 	if (this->is_on != is_on) {
 		this->is_on = is_on;
-		cur_time = 0;
+		cur_time = time_to_change;
 		coord_index = 0;
 		timer->DelTime();
 	}

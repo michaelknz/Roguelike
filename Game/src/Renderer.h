@@ -12,6 +12,7 @@
 class Renderer {
 public:
 	Renderer(const TransformQuad& transform, const TextureStruct& texture_info, Camera* cam);
+	Renderer(const TransformQuad& transform, Camera* cam);
 	~Renderer();
 	void SetQuad(const TransformQuad& transform);
 	void Draw(Transform transform);

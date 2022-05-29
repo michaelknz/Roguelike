@@ -1,10 +1,18 @@
 #include "Renderer.h"
 
 Renderer::Renderer(const TransformQuad& transform, const TextureStruct& texture_info, Camera* cam) {
-	shader = new Shader(transform.shader_name);
+	shader = new Shader(transform.shader_name, transform.is_gs);
 	quad = new Quad;
 	texture = nullptr;
 	SetTexture(texture_info, transform);
+	SetQuad(transform);
+	SetCamera(cam);
+}
+
+Renderer::Renderer(const TransformQuad& transform, Camera* cam) {
+	shader = new Shader(transform.shader_name, transform.is_gs);
+	quad = new Quad;
+	texture = nullptr;
 	SetQuad(transform);
 	SetCamera(cam);
 }
@@ -72,12 +80,16 @@ void Renderer::SendMVP(const TransformQuad* transform) {
 
 void Renderer::BindAll() {
 	shader->bind();
-	texture->bind();
+	if (texture != nullptr) {
+		texture->bind();
+	}
 }
 
 void Renderer::UnbindAll() {
 	texture->unbind();
-	shader->unbind();
+	if (texture != nullptr) {
+		shader->unbind();
+	}
 }
 
 void Renderer::SetQuad(const TransformQuad& transform) {

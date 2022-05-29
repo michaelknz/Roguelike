@@ -6,7 +6,9 @@ Entity::Entity(const Transform& transform, Camera* cam) {
 }
 
 Entity::~Entity() {
-
+	for (int i = 0; i < colliders.size(); ++i) {
+		delete colliders[i];
+	}
 }
 
 void Entity::Update() {
@@ -19,4 +21,8 @@ void Entity::SetTag(const std::string& tag) {
 
 std::string Entity::Get_Tag() {
 	return tag;
+}
+
+std::vector<Collider*>* Entity::GetColliders() {
+	return &colliders;
 }

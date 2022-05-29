@@ -1,7 +1,7 @@
 #include "PlayerInterface.h"
 
-PlayerInterface::PlayerInterface(float aspect) {
-	this->aspect = aspect;
+PlayerInterface::PlayerInterface(Camera* cam) {
+	this->aspect = cam->GetAspect();
 	bar = nullptr;
 	inv = nullptr;
 }
@@ -17,8 +17,15 @@ PlayerInterface::~PlayerInterface() {
 	}
 }
 
-void PlayerInterface::SetLifeHearts(const LifeBarHeartsStruct& bar_info) {
-	bar = new Life_Bar(aspect, bar_info);
+void PlayerInterface::SetLifeHearts(const CharSpec& player_info) {
+	LifeBarHeartsStruct life;
+	life.max_life = player_info.max_life;
+	life.texture_pos = { vectori2(6,3),vectori2(5,3),vectori2(4,3) };
+	life.texture.name = "res/room.png";
+	life.texture.size = vectori2(8, 8);
+	life.transform.size = vectorf2(0.12f, 0.12f);
+	life.transform.pos = vectorf2(-aspect + life.transform.size.x / 2.0f, 1.0f - life.transform.size.y / 2.0f);
+	bar = new Life_Bar(aspect, life);
 }
 
 void PlayerInterface::SetInventoryBar() {

@@ -24,7 +24,13 @@ Scene::~Scene() {
 }
 
 void Scene::AddEntity(Entity* new_entity) {
-	entities.push_back(new_entity);
+	instance->entities.push_back(new_entity);
+	instance->colliders[new_entity] = (new_entity->GetColliders());
+}
+
+void Scene::DeleteEntity(Entity* del_entity) {
+	instance->entities.erase(std::find(instance->entities.begin(), instance->entities.end(), del_entity));
+	instance->colliders.erase(del_entity);
 }
 
 void Scene::Clear_Scene() {
@@ -45,4 +51,20 @@ void Scene::UpdateAllEntities() {
 	for (int i = 0; i < instance->entities.size(); ++i) {
 		instance->entities[i]->Update();
 	}
+}
+
+std::vector<Collider*> Scene::CheckCollide(Collider* collider, const std::string& tag) {
+	std::vector<Collider*> output;
+	for (std::unordered_map<Entity*, std::vector<Collider*>*>::iterator i = instance->colliders.begin(); i != instance->colliders.end(); ++i) {
+		if ((*i).first == collider->GetObject()) {
+			continue;
+		}
+		std::vector<Collider*> tmp = *(*i).second;
+		for (int j = 0; j < tmp.size(); ++j) {
+			if ((tmp[j]->GetTag() == tag) && (collider->IsCollide(tmp[j]))) {
+				output.push_back(tmp[j]);
+			}
+		}
+	}
+	return output;
 }

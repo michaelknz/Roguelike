@@ -89,7 +89,7 @@ void InteractionPM::InteractWithDoor(Player* player, Room* room, Camera* cam) {
 	pos_in_room_u.y -= 0.5f;
 	pos_in_room_d.y += 0.5f;
 
-	float player_del = 2.8f;
+	float player_del = 3.5f;
 
 	bool f_state = Input::GetButtonState('f');
 	if (!f_state) {

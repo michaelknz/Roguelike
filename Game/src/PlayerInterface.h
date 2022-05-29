@@ -7,9 +7,9 @@
 
 class PlayerInterface {
 public:
-	PlayerInterface(float aspect);
+	PlayerInterface(Camera* cam);
 	~PlayerInterface();
-	void SetLifeHearts(const LifeBarHeartsStruct& bar_info);
+	void SetLifeHearts(const CharSpec& player_info);
 	void SetInventoryBar();
 	void Update(int player_life);
 private:

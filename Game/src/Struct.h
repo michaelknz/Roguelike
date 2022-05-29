@@ -13,6 +13,7 @@ struct TransformQuad {
 	std::array<int, 12> order;
 	std::string shader_name;
 	float z;
+	bool is_gs;
 	TransformQuad();
 };
 

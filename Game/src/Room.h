@@ -23,6 +23,7 @@ private:
 	void Draw();
 	void Init(const vectori2& coord);
 	void SetTileMap();
+	void SetColliders();
 	void SetWalls();
 	void SetDoors();
 	TileMapStruct tilemap_info;

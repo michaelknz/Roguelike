@@ -1,10 +1,17 @@
 #include "Shader.h"
 
-Shader::Shader(const std::string& shader_name) {
+Shader::Shader(const std::string& shader_name, bool is_gs) {
+	this->is_gs = is_gs;
 	prog = glCreateProgram();
 	shaders[0] = Create_Shader(read_shader("shaders/" + shader_name + ".vs"), GL_VERTEX_SHADER);
 	shaders[1] = Create_Shader(read_shader("shaders/" + shader_name + ".fs"), GL_FRAGMENT_SHADER);
-	for (int i = 0; i < 2; ++i) {
+	if (is_gs) {
+		shaders[2] = Create_Shader(read_shader("shaders/" + shader_name + ".gs"), GL_GEOMETRY_SHADER);
+	}
+	for (int i = 0; i < 3; ++i) {
+		if (!is_gs && i==3) {
+			continue;
+		}
 		glAttachShader(prog, shaders[i]);
 	}
 	glLinkProgram(prog);
@@ -21,7 +28,10 @@ Shader::Shader(const std::string& shader_name) {
 }
 
 Shader::~Shader() {
-	for (int i = 0; i < 2; ++i) {
+	for (int i = 0; i < 3; ++i) {
+		if (!is_gs && i == 3) {
+			continue;
+		}
 		glDetachShader(prog, shaders[i]);
 		glDeleteShader(shaders[i]);
 	}
